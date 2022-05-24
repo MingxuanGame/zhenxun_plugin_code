@@ -20,15 +20,15 @@ codeType = {
 async def run(code):
     code = code.replace("&amp;", "&").replace("&#91;", "[").replace("&#93;", "]")
     try:
-        a = re.findall(
+        cmd = re.findall(
             r"(py|php|java|cpp|js|c#|c|go|asm)\s?(-i)?\s?(\w*)" r"?(\n|\r)((?:.|\n)+)",
             code,
         )[0]
-        logger.info(f"code language: {a}")
+        logger.info(f"command: {cmd}")
     except Exception:
         return "输入有误汪\n目前仅支持c/cpp/c#/py/php/go/java/js"
-    lang, code = a[0], a[4]
-    stdin = a[2] if "-i" in code else ""
+    lang, code = cmd[0], cmd[4]
+    stdin = cmd[2] if "-i" in cmd else ""
     data = {
         "files": [{"name": f"main.{codeType[lang][1]}", "content": code}],
         "stdin": stdin,
